@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
@@ -19,7 +18,6 @@ import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -38,7 +36,10 @@ class MainActivity : ComponentActivity() {
             val viewModel: CounterViewModel = viewModel()
 
             CounterAppTheme {
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
                     CounterApp(viewModel)
                 }
             }
@@ -47,7 +48,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun CounterApp(model: CounterViewModel) {
+fun CounterApp(viewModel: CounterViewModel? = null) {
     Column(
         Modifier
             .fillMaxSize()
@@ -55,11 +56,11 @@ fun CounterApp(model: CounterViewModel) {
     ) {
 
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            Text("${model.count()}")
+            Text("${viewModel?.count?.value ?: 0}")
         }
 
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            IconButton(onClick = { model.increment() }) {
+            IconButton(onClick = { viewModel?.increment() }) {
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowUp,
                     contentDescription = "Increment icon"
@@ -68,7 +69,7 @@ fun CounterApp(model: CounterViewModel) {
 
             Spacer(Modifier.width(8.dp))
 
-            IconButton(onClick = { model.decrement() }) {
+            IconButton(onClick = { viewModel?.decrement() }) {
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowDown,
                     contentDescription = "Decrement icon"
@@ -83,6 +84,6 @@ fun CounterApp(model: CounterViewModel) {
 fun GreetingPreview() {
 
     CounterAppTheme {
-        CounterApp(model = CounterViewModel())
+        CounterApp()
     }
 }
